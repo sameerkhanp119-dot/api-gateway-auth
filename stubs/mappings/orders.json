@@ -1,0 +1,28 @@
+{
+  "mappings": [
+    {
+      "request": { "method": "GET", "urlPathPattern": "/api/v1/orders/[^/]+" },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "id": "{{request.pathSegments.[3]}}",
+          "status": "CONFIRMED",
+          "totalAmount": 99.00,
+          "currency": "USD",
+          "correlationId": "{{request.headers.X-Correlation-Id}}"
+        },
+        "transformers": ["response-template"]
+      }
+    },
+    {
+      "request": { "method": "POST", "url": "/api/v1/orders" },
+      "response": {
+        "status": 201,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": { "id": "{{randomValue type='UUID'}}", "status": "PENDING_PAYMENT" },
+        "transformers": ["response-template"]
+      }
+    }
+  ]
+}
